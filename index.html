@@ -276,11 +276,47 @@
         // --- COMPONENTE: MODAL DE CADASTRO DE TÉCNICO (NOVO) ---
         const TechRegistrationModal = ({ isOpen, onClose }) => {
             if (!isOpen) return null;
+            
+            const [formData, setFormData] = useState({
+                nome: "",
+                cidade: "",
+                whatsapp: "",
+                experiencia: "Sou iniciante"
+            });
+            const [isSending, setIsSending] = useState(false);
 
-            const handleSubmit = (e) => {
+            const handleChange = (e) => {
+                setFormData({ ...formData, [e.target.name]: e.target.value });
+            };
+
+            const handleSubmit = async (e) => {
                 e.preventDefault();
-                alert("Pré-cadastro realizado com sucesso! Nossa equipe entrará em contato.");
-                onClose();
+                setIsSending(true);
+
+                try {
+                    const response = await fetch("https://formspree.io/f/xpqwvvea", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ 
+                            ...formData,
+                            origem: "Cadastro de Técnico - Site Hometech"
+                        })
+                    });
+
+                    if (response.ok) {
+                        alert("Pré-cadastro realizado com sucesso! Nossa equipe entrará em contato.");
+                        onClose();
+                        setFormData({ nome: "", cidade: "", whatsapp: "", experiencia: "Sou iniciante" });
+                    } else {
+                        alert("Erro ao enviar. Tente novamente.");
+                    }
+                } catch (error) {
+                    alert("Erro de conexão.");
+                } finally {
+                    setIsSending(false);
+                }
             };
 
             return (
@@ -301,28 +337,59 @@
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
-                                <input type="text" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none" required />
+                                <input 
+                                    type="text" 
+                                    name="nome"
+                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none" 
+                                    required 
+                                    value={formData.nome}
+                                    onChange={handleChange}
+                                />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Cidade</label>
-                                    <input type="text" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none" required />
+                                    <input 
+                                        type="text" 
+                                        name="cidade"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none" 
+                                        required 
+                                        value={formData.cidade}
+                                        onChange={handleChange}
+                                    />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp</label>
-                                    <input type="tel" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none" placeholder="(00) 00000-0000" required />
+                                    <input 
+                                        type="tel" 
+                                        name="whatsapp"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none" 
+                                        placeholder="(00) 00000-0000" 
+                                        required 
+                                        value={formData.whatsapp}
+                                        onChange={handleChange}
+                                    />
                                 </div>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Experiência</label>
-                                <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
+                                <select 
+                                    name="experiencia"
+                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
+                                    value={formData.experiencia}
+                                    onChange={handleChange}
+                                >
                                     <option>Sou iniciante</option>
                                     <option>Já conserto algumas coisas</option>
                                     <option>Sou técnico experiente</option>
                                 </select>
                             </div>
-                            <button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-lg mt-2 transition">
-                                Enviar Cadastro
+                            <button 
+                                type="submit" 
+                                disabled={isSending}
+                                className={`w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-lg mt-2 transition ${isSending ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            >
+                                {isSending ? 'Enviando...' : 'Enviar Cadastro'}
                             </button>
                         </form>
                     </div>
