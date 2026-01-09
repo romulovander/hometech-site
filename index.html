@@ -44,18 +44,22 @@
         const { useState, useEffect, useRef } = React;
 
         // --- CONFIGURAÇÃO ---
-        // IMPORTANTE: Troque este link pelo seu link real da Kiwify/Hotmart
-        const LINK_DO_CHECKOUT = "https://pay.kiwify.com.br/SEU-LINK-AQUI"; 
+        // COLOQUE SEU NÚMERO ABAIXO (Mantenha o 55 antes do DDD)
+        // Exemplo: "5511999998888"
+        const SEU_WHATSAPP = "5500000000000"; 
         
-        // --- ARQUIVOS LOCAIS (Renomeie seus arquivos para estes nomes exatos) ---
-        const NOME_ARQUIVO_LOGO = "logo-hometech.png"; 
-        const NOME_ARQUIVO_VIDEO = "video-apresentacao.mp4";
-        const NOME_FOTO_HERO = "foto-hero.webp";       // Antiga foto 01
-        const NOME_FOTO_BANCADA = "foto-bancada.webp"; // Antiga foto 02
-        const NOME_FOTO_DEPOIMENTO = "foto-depoimento.webp"; // Antiga foto 03
-        const NOME_FOTO_ROMULO = "foto-romulo.jpg";
+        // Link automático para o WhatsApp
+        const LINK_DO_CHECKOUT = `https://wa.me/${SEU_WHATSAPP}?text=Olá,%20quero%20ser%20um%20Fundador%20Hometech%20e%20garantir%20minha%20vaga%20por%20R$%20347.`;
+        
+        // --- ARQUIVOS LOCAIS (Caminhos corrigidos para a pasta assets/) ---
+        const NOME_ARQUIVO_LOGO = "assets/logo-hometech.png"; 
+        const NOME_ARQUIVO_VIDEO = "assets/video-apresentacao.mp4";
+        const NOME_FOTO_HERO = "assets/foto-hero.webp";       
+        const NOME_FOTO_BANCADA = "assets/foto-bancada.webp"; 
+        const NOME_FOTO_DEPOIMENTO = "assets/foto-depoimento.webp"; 
+        const NOME_FOTO_ROMULO = "assets/foto-romulo.JPG";
 
-        // --- LINKS DE FALLBACK (Segurança se o arquivo local falhar) ---
+        // --- LINKS DE FALLBACK (Segurança) ---
         const FALLBACK_IMAGES = {
             hero_video_poster: "https://images.unsplash.com/photo-1581092921461-eab62e97a780?q=80&w=2070&auto=format&fit=crop",
             bancada: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop",
@@ -147,11 +151,9 @@
             const bgClass = variant === "green" ? "bg-green-600 hover:bg-green-700" : "bg-orange-600 hover:bg-orange-700";
             const pingClass = variant === "green" ? "bg-green-500" : "bg-orange-500";
 
+            // Removido o alerta de erro, pois agora estamos usando WhatsApp
             const handleClick = (e) => {
-                if (href && href.includes("SEU-LINK-AQUI")) {
-                    e.preventDefault();
-                    alert("⚠️ Configuração Necessária:\n\nRomulo, você precisa substituir o 'SEU-LINK-AQUI' no código pelo seu link real da Kiwify ou Hotmart para que o botão funcione.");
-                } else if (onClick) {
+                if (onClick) {
                     onClick(e);
                 }
             };
