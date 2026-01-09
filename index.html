@@ -44,9 +44,8 @@
         const { useState, useEffect, useRef } = React;
 
         // --- CONFIGURAÇÃO ---
-        // COLOQUE SEU NÚMERO ABAIXO (Mantenha o 55 antes do DDD)
-        // Exemplo: "5511999998888"
-        const SEU_WHATSAPP = "5500000000000"; 
+        // NÚMERO DO WHATSAPP ATUALIZADO
+        const SEU_WHATSAPP = "553187251057"; 
         
         // Link automático para o WhatsApp
         const LINK_DO_CHECKOUT = `https://wa.me/${SEU_WHATSAPP}?text=Olá,%20quero%20ser%20um%20Fundador%20Hometech%20e%20garantir%20minha%20vaga%20por%20R$%20347.`;
@@ -205,19 +204,43 @@
         const LeadCaptureForm = () => {
             const [email, setEmail] = useState("");
             const [submitted, setSubmitted] = useState(false);
+            const [isSending, setIsSending] = useState(false);
 
-            const handleSubmit = (e) => {
+            const handleSubmit = async (e) => {
                 e.preventDefault();
-                // Aqui entraria a lógica de enviar para um banco de dados
-                console.log("Lead capturado:", email);
-                setSubmitted(true);
+                setIsSending(true);
+                
+                try {
+                    // Envio real para o seu Formspree
+                    const response = await fetch("https://formspree.io/f/xpqwvvea", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ 
+                            email: email,
+                            origem: "Site Nano Franquia - Lead"
+                        })
+                    });
+
+                    if (response.ok) {
+                        setSubmitted(true);
+                        setEmail("");
+                    } else {
+                        alert("Ocorreu um erro ao enviar. Por favor, tente novamente.");
+                    }
+                } catch (error) {
+                    alert("Erro de conexão. Verifique sua internet.");
+                } finally {
+                    setIsSending(false);
+                }
             };
 
             if (submitted) {
                 return (
                     <div className="mb-8 p-4 bg-green-50 rounded-lg border border-green-200 text-center fade-in">
                         <p className="text-green-800 font-bold flex items-center justify-center gap-2">
-                            <Icons.CheckCircle size={20} /> Obrigado! Entraremos em contato.
+                            <Icons.CheckCircle size={20} /> Sucesso! Enviamos os detalhes para seu e-mail.
                         </p>
                     </div>
                 );
@@ -229,14 +252,20 @@
                     <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
                         <input 
                             type="email" 
+                            name="email"
                             placeholder="Seu melhor email..." 
                             className="flex-1 p-3 rounded border border-gray-300 focus:outline-none focus:border-orange-500"
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            disabled={isSending}
                         />
-                        <button type="submit" className="bg-blue-700 hover:bg-blue-800 text-white px-5 py-3 rounded font-bold transition">
-                            Quero o PDF
+                        <button 
+                            type="submit" 
+                            disabled={isSending}
+                            className={`bg-blue-700 hover:bg-blue-800 text-white px-5 py-3 rounded font-bold transition flex items-center justify-center ${isSending ? 'opacity-70 cursor-not-allowed' : ''}`}
+                        >
+                            {isSending ? 'Enviando...' : 'Quero o PDF'}
                         </button>
                     </form>
                     <p className="text-xs text-gray-500 mt-2">Sem spam. Apenas conteúdo sobre a franquia.</p>
@@ -795,7 +824,7 @@
                                     <img 
                                         src={NOME_ARQUIVO_LOGO}
                                         alt="Nano Franquia Hometech" 
-                                        className="h-10 md:h-12 w-auto object-contain logo-blend"
+                                        className="h-14 md:h-20 w-auto object-contain logo-blend"
                                         onError={() => setLogoError(true)}
                                     />
                                 ) : (
@@ -876,7 +905,7 @@
                                     <img 
                                         src={NOME_ARQUIVO_LOGO}
                                         alt="Nano Franquia Hometech" 
-                                        className="h-8 md:h-10 w-auto object-contain logo-blend opacity-90"
+                                        className="h-10 md:h-14 w-auto object-contain logo-blend opacity-90"
                                         onError={() => setLogoFooterError(true)}
                                     />
                                 ) : (
