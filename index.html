@@ -1065,11 +1065,11 @@
                     <footer className="bg-gray-900 text-gray-400 py-10 border-t border-gray-800">
                         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
                             <div className="flex items-center cursor-pointer" onClick={() => setActiveTab('home')}>
-                                {!logoFooterError ? (
+                                {!logoFooterError ?(
                                     <img 
                                         src={NOME_ARQUIVO_LOGO}
                                         alt="Nano Franquia Hometech" 
-                                        className="h-40 md:h-14 w-auto object-contain logo-blend opacity-90"
+                                        className="h-40 md:h-35 w-auto object-contain logo-blend opacity-90"
                                         onError={() => setLogoFooterError(true)}
                                     />
                                 ) : (
@@ -1095,6 +1095,7 @@
     </script>
 </body>
 </html>
+
 
 
 
