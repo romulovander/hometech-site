@@ -53,8 +53,13 @@
 
         // --- ARQUIVOS LOCAIS ---
         const NOME_ARQUIVO_LOGO = "assets/logo-hometech.png"; 
-        const NOME_ARQUIVO_VIDEO = "assets/video-apresentacao.mp4";
-        const NOME_ARQUIVO_VIDEO_BANCADA = "assets/video-bancada.mp4"; // NOVO VÍDEO
+        
+        // Vídeo da CAPA (Topo)
+        const NOME_ARQUIVO_VIDEO = "assets/video-capa.mp4";
+        
+        // Vídeo da BANCADA (Meio da página) - ATUALIZADO
+        const NOME_ARQUIVO_VIDEO_BANCADA = "assets/video-bancada-nova.mp4"; 
+        
         const NOME_FOTO_HERO = "assets/foto-hero.webp";       
         const NOME_FOTO_BANCADA = "assets/foto-bancada.webp"; 
         const NOME_FOTO_DEPOIMENTO = "assets/foto-depoimento.webp"; 
@@ -318,7 +323,7 @@
                             <div className="relative group w-full max-w-xl mx-auto">
                                 <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 to-blue-500 rounded-2xl blur opacity-40 group-hover:opacity-60 transition duration-1000"></div>
                                 <div className="relative bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-700 aspect-video flex items-center justify-center">
-                                    <video controls className="w-full h-full object-cover" poster={NOME_FOTO_HERO} onError={(e) => e.target.poster = FALLBACK_IMAGES.hero_video_poster}><source src={NOME_ARQUIVO_VIDEO} type="video/mp4" />Seu navegador não suporta vídeos.</video>
+                                    <video key={NOME_ARQUIVO_VIDEO} controls autoPlay muted loop playsInline className="w-full h-full object-cover" poster={NOME_FOTO_HERO} onError={(e) => e.target.poster = FALLBACK_IMAGES.hero_video_poster}><source src={NOME_ARQUIVO_VIDEO} type="video/mp4" />Seu navegador não suporta vídeos.</video>
                                 </div>
                                 <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-blue-900 px-4 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-2 whitespace-nowrap"><Icons.Play size={12} className="text-orange-500 fill-current" /> VEJA COMO FATURAR</div>
                             </div>
